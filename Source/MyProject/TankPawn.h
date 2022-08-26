@@ -38,10 +38,12 @@ protected:
 	UCameraComponent * Camera;
 
 	float _targetForwardAxisValue;
+	float _targetRightAxisValue;
 
 public:
 	UFUNCTION()
 	void MoveForward(float AxisValue);
+	void MoveRight(float AxisValue);
 	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
