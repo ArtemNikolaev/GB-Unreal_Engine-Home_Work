@@ -4,6 +4,9 @@
 #include "TankPawn.h"
 #include "Components/StaticMeshComponent.h"
 
+DECLARE_LOG_CATEGORY_EXTERN(LogTank, All, All);
+DEFINE_LOG_CATEGORY(LogTank);
+
 // Sets default values
 ATankPawn::ATankPawn()
 {
@@ -48,6 +51,13 @@ void ATankPawn::Tick(float DeltaTime)
 	SetActorLocation(movePosition, true);
 
 	_currentRotationAxisValue = FMath::Lerp(_currentRotationAxisValue, _targetRotateRightAxisValue, InterpolationKey);
+	UE_LOG(
+		LogTank,
+		Warning,
+		TEXT( "_currentRotationAxisValue = %f _targetRotateRightAxisValue = %f"),
+		_currentRotationAxisValue,
+		_targetRotateRightAxisValue
+	);
 	float yawRotation = RotationSpeed * _currentRotationAxisValue * DeltaTime;
 	FRotator currentRotation = GetActorRotation();
 
