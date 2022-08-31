@@ -31,6 +31,8 @@ protected:
 	float MoveSpeed = 100;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Movement|Speed")
 	float RotationSpeed = 100;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Movement|Speed")
+	float InterpolationKey = 0.1f;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category="Components")
 	USpringArmComponent * SpringArm;
@@ -40,6 +42,7 @@ protected:
 	float _targetForwardAxisValue;
 	float _targetRightAxisValue;
 	float _targetRotateRightAxisValue;
+	float _currentRotationAxisValue;
 
 public:
 	UFUNCTION()

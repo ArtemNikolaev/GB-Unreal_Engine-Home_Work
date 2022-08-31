@@ -47,7 +47,8 @@ void ATankPawn::Tick(float DeltaTime)
 		rightVector * MoveSpeed * _targetRightAxisValue * DeltaTime;
 	SetActorLocation(movePosition, true);
 
-	float yawRotation = RotationSpeed * _targetRotateRightAxisValue * DeltaTime;
+	_currentRotationAxisValue = FMath::Lerp(_currentRotationAxisValue, _targetRotateRightAxisValue, InterpolationKey);
+	float yawRotation = RotationSpeed * _currentRotationAxisValue * DeltaTime;
 	FRotator currentRotation = GetActorRotation();
 
 	yawRotation += currentRotation.Yaw;
