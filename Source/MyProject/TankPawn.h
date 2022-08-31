@@ -39,11 +39,13 @@ protected:
 
 	float _targetForwardAxisValue;
 	float _targetRightAxisValue;
+	float _targetRotateRightAxisValue;
 
 public:
 	UFUNCTION()
 	void MoveForward(float AxisValue);
 	void MoveRight(float AxisValue);
+	void RotateRight(float AxisValue);
 	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
