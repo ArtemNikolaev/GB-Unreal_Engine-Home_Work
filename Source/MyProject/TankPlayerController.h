@@ -19,10 +19,14 @@ class MYPROJECT_API ATankPlayerController : public APlayerController
 protected:
 	UPROPERTY()
 	ATankPawn* TankPawn;
+	UPROPERTY()
+	FVector MousePos;
 
 public:
 	ATankPlayerController();
 	virtual void SetupInputComponent() override;
+	FVector GetMousePos() { return MousePos; }
+	virtual void Tick(float DeltaTime) override;
 
 protected:
 	virtual void BeginPlay() override;
