@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "TankPlayerController.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/Pawn.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -33,6 +34,8 @@ protected:
 	float RotationSpeed = 100;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Movement|Speed")
 	float InterpolationKey = 0.1f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Turret|Speed")
+	float TurretInterpolationKey = 0.5f;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category="Components")
 	USpringArmComponent * SpringArm;
@@ -43,6 +46,8 @@ protected:
 	float _targetRightAxisValue;
 	float _targetRotateRightAxisValue;
 	float _currentRotationAxisValue;
+
+	ATankPlayerController* TankController;
 
 public:
 	UFUNCTION()

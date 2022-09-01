@@ -2,7 +2,10 @@
 
 
 #include "TankPawn.h"
+
+#include "TankPlayerController.h"
 #include "Components/StaticMeshComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTank, All, All);
 DEFINE_LOG_CATEGORY(LogTank);
@@ -34,7 +37,7 @@ ATankPawn::ATankPawn()
 void ATankPawn::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	TankController = Cast<ATankPlayerController>(GetController());
 }
 
 // Called every frame
@@ -42,6 +45,7 @@ void ATankPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	// Tank movement
 	FVector currentLocation = GetActorLocation();
 	FVector forwardVector = GetActorForwardVector();
 	FVector rightVector = GetActorRightVector();
@@ -50,21 +54,24 @@ void ATankPawn::Tick(float DeltaTime)
 		rightVector * MoveSpeed * _targetRightAxisValue * DeltaTime;
 	SetActorLocation(movePosition, true);
 
+	// Tank Rotation
 	_currentRotationAxisValue = FMath::Lerp(_currentRotationAxisValue, _targetRotateRightAxisValue, InterpolationKey);
-	UE_LOG(
-		LogTank,
-		Warning,
-		TEXT( "_currentRotationAxisValue = %f _targetRotateRightAxisValue = %f"),
-		_currentRotationAxisValue,
-		_targetRotateRightAxisValue
-	);
 	float yawRotation = RotationSpeed * _currentRotationAxisValue * DeltaTime;
-	FRotator currentRotation = GetActorRotation();
-
-	yawRotation += currentRotation.Yaw;
+	FRotator currentTankRotation = GetActorRotation();
+	yawRotation += currentTankRotation.Yaw;
 	FRotator newRotation = FRotator(0, yawRotation, 0);
-
 	SetActorRotation(newRotation);
+
+	// Turret rotation
+	if (TankController)
+	{
+		FVector mousePos = TankController->GetMousePos();
+		FRotator targetTurretRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), mousePos);
+		FRotator currentTurretRotation = TurretMesh->GetComponentRotation();
+		targetTurretRotation.Pitch = currentTurretRotation.Pitch;
+		targetTurretRotation.Roll = currentTurretRotation.Roll;
+		TurretMesh->SetWorldRotation(FMath::Lerp(currentTurretRotation, targetTurretRotation, TurretInterpolationKey));
+	}
 }
 
 // Called to bind functionality to input
